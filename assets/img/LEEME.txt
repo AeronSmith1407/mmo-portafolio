@@ -1,0 +1,2 @@
+Coloca aqui tu foto real con el nombre exacto: perfil.jpg
+Y las capturas de proyectos (16:9), apuntandolas desde js/data.js -> projects[].img

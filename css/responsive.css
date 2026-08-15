@@ -1,0 +1,113 @@
+/* ============================================================
+   SISTEMA v2.0 — responsive.css
+   ============================================================ */
+
+/* ---------- ≤ 1080px ---------- */
+@media (max-width:1080px){
+  .sheet{ grid-template-columns:1fr }
+  .sheet__side{ max-width:520px; margin-inline:auto }
+  .guild{ grid-template-columns:1fr }
+  .expbar{ height:min(46vh,380px) }
+}
+
+/* ---------- ≤ 860px : navegación móvil ---------- */
+@media (max-width:860px){
+  .hud__menu{ display:block }
+  .hud__nav{
+    position:fixed; inset:0; z-index:-1;
+    flex-direction:column; align-items:center; justify-content:center; gap:.4rem;
+    background:rgba(6,6,14,.97); backdrop-filter:blur(16px);
+    opacity:0; pointer-events:none; transition:opacity .3s;
+  }
+  .hud__nav.is-open{ opacity:1; pointer-events:auto; z-index:690 }
+  .hud__nav a{
+    font-size:.95rem; letter-spacing:.28em; padding:1rem 2rem; color:var(--txt);
+    opacity:0;
+  }
+  .hud__nav.is-open a{ animation:menu-item-in .45s ease forwards }
+  .hud__nav.is-open a:nth-child(1){ animation-delay:.05s }
+  .hud__nav.is-open a:nth-child(2){ animation-delay:.11s }
+  .hud__nav.is-open a:nth-child(3){ animation-delay:.17s }
+  .hud__nav.is-open a:nth-child(4){ animation-delay:.23s }
+  .hud__nav.is-open a:nth-child(5){ animation-delay:.29s }
+  .hud__nav a::after{ left:2rem; right:2rem; bottom:.6rem }
+  .hud__menu{ z-index:700; position:relative }
+
+  .dungeons{ grid-template-columns:1fr }
+  .hero__stats{ width:100%; justify-content:space-around }
+  .ministat{ padding:0 .6rem }
+  .notif-stack{ top:68px; right:10px; max-width:min(300px,72vw) }
+}
+
+/* ---------- ≤ 640px ---------- */
+@media (max-width:640px){
+  :root{ --bevel: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px) }
+
+  .hero{ padding-top:4.5rem }
+  .hero__stats{ padding:.8rem 0; margin:1.4rem 0 1.7rem }
+  .ministat{ border-right:none; flex:1 1 30% }
+  .ministat b{ font-size:.72rem }
+  .hero__actions{ flex-direction:column; align-items:stretch }
+  .hero__actions .btn{ width:100% }
+  .hero__quote{ font-size:.85rem }
+
+  .expbar{ right:6px; height:38vh }
+  .expbar__label{ display:none }
+  .expbar__track{ width:5px }
+  .expbar__thumb{ width:11px; height:11px; margin-left:-5.5px }
+
+  .dock{ left:10px; bottom:10px; flex-direction:row }
+  .dock__btn{ width:42px; height:42px }
+  .dock__tip{ left:0; bottom:50px }
+
+  .nodes{ grid-template-columns:1fr 1fr; gap:.6rem }
+  .node{ flex-direction:column; text-align:center; gap:.55rem; padding:.85rem .5rem }
+  .node__name{ font-size:.55rem; white-space:normal }
+  .node__lvl{ justify-content:center }
+  .node__body{ width:100% }
+
+  .dungeon__actions{ flex-direction:column }
+  .dungeon__actions .btn{ width:100% }
+
+  .lvl__card{ padding:1.1rem 1rem }
+  .lvl__date{ margin-left:0; width:100% }
+
+  .loader__sigil{ width:82px; margin-bottom:1.1rem }
+  .loader__console{ min-height:5rem; font-size:.44rem }
+  .loader__console li:nth-child(n+4){ display:none }
+  .loader__stamp-in{ font-size:.72rem; letter-spacing:.18em }
+  .loader__winname{ font-size:.42rem }
+
+  .foot__in{ justify-content:center; text-align:center }
+  .notif-stack{ left:10px; right:10px; max-width:none; justify-items:stretch }
+}
+
+/* ---------- ≤ 400px ---------- */
+@media (max-width:400px){
+  .nodes{ grid-template-columns:1fr }
+  .node{ flex-direction:row; text-align:left }
+  .node__lvl{ justify-content:flex-start }
+  .hud__brand-text i{ display:none }
+}
+
+/* ---------- Dispositivos táctiles: sin cursor custom ---------- */
+@media (hover:none),(pointer:coarse){
+  body.has-cursor{ cursor:auto }
+  body.has-cursor .cursor,body.has-cursor .cursor-trail{ display:none !important }
+  body.has-cursor a,body.has-cursor button,body.has-cursor input,body.has-cursor textarea{ cursor:auto }
+}
+
+/* ---------- Altura corta (móvil apaisado) ---------- */
+@media (max-height:560px) and (orientation:landscape){
+  .hero{ min-height:auto; padding:6rem 0 4rem }
+  .scroll-cue{ display:none }
+  .expbar{ height:34vh }
+}
+
+/* ---------- Impresión ---------- */
+@media print{
+  .loader,.particles,.bg-grid,.bg-vignette,.cursor,.cursor-trail,
+  .expbar,.dock,.hud,.notif-stack,.scroll-cue{ display:none !important }
+  body{ background:#fff; color:#000 }
+  .panel{ border:1px solid #999; background:#fff; clip-path:none }
+}

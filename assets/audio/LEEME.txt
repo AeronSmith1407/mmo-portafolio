@@ -1,0 +1,3 @@
+Opcional. Efectos de sonido cortos (Pixabay Sound Effects u otro banco libre):
+click.mp3  hover.mp3  arise.mp3  notify.mp3  unlock.mp3  levelup.mp3
+Si la carpeta esta vacia, los efectos se sintetizan con Web Audio (js/audio.js).

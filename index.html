@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a12">
+<meta name="description" content="Portafolio de Henrry Solorzano — T.S.U en Informática. Interfaz del Sistema: cazador de bugs, forjador de interfaces.">
+<title>SISTEMA // Henrry Solorzano</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/responsive.css">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a12'/><path d='M50 12 L86 50 L50 88 L14 50 Z' fill='none' stroke='%238b5cf6' stroke-width='7'/><circle cx='50' cy='50' r='11' fill='%2322d3ee'/></svg>">
+</head>
+<body class="is-loading">
+
+<!-- ============ LOADING SCREEN ============ -->
+<div id="loader" class="loader" role="status" aria-live="polite">
+  <span class="loader__scan" aria-hidden="true"></span>
+  <span class="loader__rings" aria-hidden="true"><i></i><i></i><i></i></span>
+
+  <div class="loader__win">
+    <div class="panel__corner tl"></div><div class="panel__corner tr"></div>
+    <div class="panel__corner bl"></div><div class="panel__corner br"></div>
+
+    <div class="loader__titlebar">
+      <span class="loader__dot" aria-hidden="true"></span>
+      <span class="loader__winname">VENTANA DEL SISTEMA · SECUENCIA DE INICIALIZACIÓN</span>
+      <span class="loader__ver">v2.0</span>
+    </div>
+
+    <div class="loader__body">
+      <div class="loader__sigil" aria-hidden="true">
+        <svg viewBox="0 0 200 200">
+          <polygon class="sigil-outer" points="100,8 192,100 100,192 8,100"/>
+          <polygon class="sigil-mid" points="100,36 164,100 100,164 36,100"/>
+          <circle class="sigil-core" cx="100" cy="100" r="20"/>
+          <path class="sigil-rune" d="M100 60 L100 140 M70 100 L130 100"/>
+        </svg>
+      </div>
+
+      <p class="loader__title">EL SISTEMA SE ESTÁ INICIANDO<span class="dots"><i>.</i><i>.</i><i>.</i></span></p>
+
+      <div class="loader__bar" aria-hidden="true">
+        <div class="loader__fill"><span class="loader__shine"></span></div>
+        <span class="loader__segs"></span>
+      </div>
+
+      <div class="loader__meta">
+        <span class="loader__log">CONECTANDO CON EL NÚCLEO</span>
+        <span class="loader__pct">0%</span>
+      </div>
+
+      <ul class="loader__console" id="loader-console" aria-hidden="true"></ul>
+
+      <div class="loader__stamp" aria-hidden="true">
+        <span class="loader__stamp-in">ACCESO CONCEDIDO</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="loader__hint">PULSA EN CUALQUIER PARTE PARA OMITIR</p>
+</div>
+
+<!-- ============ FONDO / PARTÍCULAS ============ -->
+<canvas id="particles" class="particles" aria-hidden="true"></canvas>
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-vignette" aria-hidden="true"></div>
+
+<!-- ============ CURSOR CUSTOM ============ -->
+<div class="cursor" id="cursor" aria-hidden="true">
+  <div class="cursor__dot"></div>
+  <div class="cursor__ring"></div>
+</div>
+<canvas id="cursor-trail" class="cursor-trail" aria-hidden="true"></canvas>
+
+<!-- ============ SCROLLBAR EXP CUSTOM ============ -->
+<div class="expbar" id="expbar" aria-hidden="true">
+  <span class="expbar__label expbar__label--top">EXP</span>
+  <div class="expbar__track" id="expbar-track">
+    <div class="expbar__fill" id="expbar-fill"></div>
+    <div class="expbar__thumb" id="expbar-thumb"></div>
+  </div>
+  <span class="expbar__label expbar__label--bottom" id="expbar-pct">0%</span>
+</div>
+
+<!-- ============ HUD SUPERIOR ============ -->
+<header class="hud" id="hud">
+  <a href="#hero" class="hud__brand" data-sfx="click">
+    <span class="hud__diamond" aria-hidden="true"></span>
+    <span class="hud__brand-text">SISTEMA<i>v2.0</i></span>
+  </a>
+  <nav class="hud__nav" aria-label="Navegación principal">
+    <a href="#about"    data-sfx="click"><b>01</b> PERSONAJE</a>
+    <a href="#skills"   data-sfx="click"><b>02</b> HABILIDADES</a>
+    <a href="#projects" data-sfx="click"><b>03</b> MAZMORRAS</a>
+    <a href="#timeline" data-sfx="click"><b>04</b> PROGRESIÓN</a>
+    <a href="#contact"  data-sfx="click"><b>05</b> GREMIO</a>
+  </nav>
+  <button class="hud__menu" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ============ PANEL DE CONTROL FLOTANTE ============ -->
+<div class="dock" id="dock">
+  <button class="dock__btn" id="btn-audio" data-sfx="click" aria-label="Activar o silenciar música" title="Música del Sistema">
+    <svg class="ico ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    <svg class="ico ico-wave" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3z"/><path class="w1" d="M16 8.5a5 5 0 0 1 0 7"/><path class="w2" d="M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>
+    <svg class="ico ico-mute" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4h4l5 5V5L7 10H3z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg>
+    <span class="dock__eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  </button>
+  <button class="dock__btn" id="btn-notif" data-sfx="click" aria-label="Activar o desactivar notificaciones del sistema" title="Notificaciones">
+    <svg class="ico ico-bell" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a5 5 0 0 0-5 5v4l-2 3h14l-2-3V8a5 5 0 0 0-5-5z"/><path d="M10 18a2 2 0 0 0 4 0"/></svg>
+    <span class="dock__slash" aria-hidden="true"></span>
+  </button>
+  <button class="dock__btn" id="btn-fx" data-sfx="click" aria-label="Activar o desactivar efectos de sonido" title="Efectos de sonido">
+    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14V10M8 18V6M12 15V9M16 20V4M20 13v-2"/></svg>
+    <span class="dock__slash dock__slash--fx" aria-hidden="true"></span>
+  </button>
+  <div class="dock__tip" id="dock-tip">MÚSICA DEL SISTEMA</div>
+</div>
+
+<main id="main">
+
+  <!-- ==================== 01 · HERO ==================== -->
+  <section id="hero" class="section hero" data-zone="PORTAL DE ENTRADA">
+    <div class="hero__aura" aria-hidden="true"></div>
+    <div class="hero__gate" aria-hidden="true">
+      <span class="gate-ring gate-ring--1"></span>
+      <span class="gate-ring gate-ring--2"></span>
+      <span class="gate-ring gate-ring--3"></span>
+    </div>
+
+    <div class="hero__panel panel" data-parallax="0.12">
+      <div class="panel__corner tl"></div><div class="panel__corner tr"></div>
+      <div class="panel__corner bl"></div><div class="panel__corner br"></div>
+
+      <p class="hero__eyebrow reveal">▸ VENTANA DEL SISTEMA · ESTADO: <b class="ok">EN LÍNEA</b></p>
+
+      <h1 class="hero__title">
+        <span class="hero__label reveal">JUGADOR</span>
+        <span class="hero__name" data-scramble="HENRRY SOLORZANO">HENRRY SOLORZANO</span>
+      </h1>
+
+      <p class="hero__rank reveal">
+        RANGO: <span class="rank-tag rank-S">S</span>
+        <span class="hero__role">T.S.U EN INFORMÁTICA</span>
+      </p>
+
+      <div class="hero__stats reveal">
+        <div class="ministat"><span>NIVEL</span><b data-count="27">27</b></div>
+        <div class="ministat"><span>CLASE</span><b>DESARROLLADOR</b></div>
+        <div class="ministat"><span>GREMIO</span><b>INDEPENDIENTE</b></div>
+      </div>
+
+      <div class="hero__actions reveal">
+        <button class="btn btn--primary" id="btn-arise" data-sfx="arise">
+          <span class="btn__glow"></span>
+          <span class="btn__txt">ARISE — DESPERTAR</span>
+          <span class="btn__ico" aria-hidden="true">▸</span>
+        </button>
+        <a class="btn btn--ghost" href="assets/cv/CV-Henrry-Solorzano.pdf" download data-sfx="click">
+          <span class="btn__txt">DESCARGAR PERGAMINO (CV)</span>
+        </a>
+      </div>
+
+      <p class="hero__quote reveal">"Cada proyecto es una nueva mazmorra por conquistar."</p>
+    </div>
+
+    <a class="scroll-cue" href="#about" data-sfx="click" aria-label="Bajar a la siguiente sección">
+      <span class="scroll-cue__txt">DESCENDER</span>
+      <span class="scroll-cue__line" aria-hidden="true"></span>
+    </a>
+  </section>
+
+  <!-- ==================== 02 · CHARACTER SHEET ==================== -->
+  <section id="about" class="section about" data-zone="HOJA DE PERSONAJE">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <span class="sec-head__idx">01</span>
+        <h2 class="sec-head__title">HOJA DE PERSONAJE</h2>
+        <p class="sec-head__sub">ESTADO · ATRIBUTOS · HISTORIAL</p>
+      </header>
+
+      <div class="sheet">
+        <aside class="sheet__side panel reveal">
+          <div class="panel__corner tl"></div><div class="panel__corner tr"></div>
+          <div class="panel__corner bl"></div><div class="panel__corner br"></div>
+
+          <div class="avatar">
+            <div class="avatar__frame">
+              <!-- REEMPLAZAR: coloca tu foto real en assets/img/perfil.jpg -->
+              <img src="assets/img/perfil.jpg" alt="Retrato de Henrry Solorzano" loading="lazy" decoding="async"
+                   onerror="this.classList.add('is-missing');this.removeAttribute('src');">
+              <span class="avatar__scan" aria-hidden="true"></span>
+            </div>
+            <span class="avatar__rank">S</span>
+          </div>
+
+          <h3 class="sheet__name">HENRRY SOLORZANO</h3>
+          <p class="sheet__class">CAZADOR · CLASE DESARROLLADOR</p>
+
+          <ul class="sheet__meta">
+            <li><span>TÍTULO</span><b>T.S.U EN INFORMÁTICA</b></li>
+            <li><span>ESPECIALIDAD</span><b>WEB &amp; SISTEMAS</b></li>
+            <li><span>ESTADO</span><b class="ok">DISPONIBLE</b></li>
+            <li><span>UBICACIÓN</span><b>REMOTO</b></li>
+          </ul>
+
+          <div class="hp">
+            <div class="hp__row"><span>HP</span><div class="hp__bar"><i style="--v:92%"></i></div></div>
+            <div class="hp__row mp"><span>MP</span><div class="hp__bar"><i style="--v:78%"></i></div></div>
+          </div>
+        </aside>
+
+        <div class="sheet__main">
+          <div class="panel bio reveal">
+            <div class="panel__corner tl"></div><div class="panel__corner tr"></div>
+            <div class="panel__corner bl"></div><div class="panel__corner br"></div>
+            <h3 class="panel__title">▸ REGISTRO DEL CAZADOR</h3>
+            <p class="bio__text">
+              Técnico Superior Universitario en Informática con pasión por crear experiencias digitales
+              memorables. Cazador de bugs, forjador de interfaces y coleccionista de nuevas tecnologías —
+              cada proyecto es una nueva mazmorra por conquistar.
+            </p>
+          </div>
+
+          <div class="panel stats reveal">
+            <div class="panel__corner tl"></div><div class="panel__corner tr"></div>
+            <div class="panel__corner bl"></div><div class="panel__corner br"></div>
+            <h3 class="panel__title">▸ ATRIBUTOS</h3>
+            <div class="stats__list" id="stats-list"><!-- inyectado por JS (data.js) --></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 03 · SKILL TREE ==================== -->
+  <section id="skills" class="section skills" data-zone="ÁRBOL DE HABILIDADES">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <span class="sec-head__idx">02</span>
+        <h2 class="sec-head__title">ÁRBOL DE HABILIDADES</h2>
+        <p class="sec-head__sub">HABILIDADES DESBLOQUEADAS · <span id="skill-count">0</span> NODOS ACTIVOS</p>
+      </header>
+      <div class="tree" id="skill-tree"><!-- inyectado por JS (data.js) --></div>
+    </div>
+  </section>
+
+  <!-- ==================== 04 · MAZMORRAS ==================== -->
+  <section id="projects" class="section projects" data-zone="MAZMORRAS">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <span class="sec-head__idx">03</span>
+        <h2 class="sec-head__title">MAZMORRAS CONQUISTADAS</h2>
+        <p class="sec-head__sub">MISIONES COMPLETADAS · BOTÍN OBTENIDO</p>
+      </header>
+      <div class="dungeons" id="dungeons"><!-- inyectado por JS (data.js) --></div>
+      <p class="projects__foot reveal">▸ NUEVAS PUERTAS APARECIENDO... EL SISTEMA SIGUE ESCANEANDO.</p>
+    </div>
+  </section>
+
+  <!-- ==================== 05 · PROGRESIÓN ==================== -->
+  <section id="timeline" class="section timeline" data-zone="LÍNEA DE PROGRESIÓN">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <span class="sec-head__idx">04</span>
+        <h2 class="sec-head__title">LÍNEA DE PROGRESIÓN</h2>
+        <p class="sec-head__sub">NIVELES ALCANZADOS · HISTORIAL DE ASCENSO</p>
+      </header>
+      <div class="road">
+        <div class="road__line" aria-hidden="true"><span class="road__fill" id="road-fill"></span></div>
+        <div class="road__items" id="road-items"><!-- inyectado por JS (data.js) --></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 06 · GREMIO ==================== -->
+  <section id="contact" class="section contact" data-zone="INVOCACIÓN AL GREMIO">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <span class="sec-head__idx">05</span>
+        <h2 class="sec-head__title">INVOCACIÓN AL GREMIO</h2>
+        <p class="sec-head__sub">ENVÍA UN MENSAJE AL SISTEMA</p>
+      </header>
+
+      <div class="guild">
+        <form class="panel form reveal" id="contact-form" novalidate>
+          <div class="panel__corner tl"></div><div class="panel__corner tr"></div>
+          <div class="panel__corner bl"></div><div class="panel__corner br"></div>
+          <h3 class="panel__title">▸ PERGAMINO DE CONVOCATORIA</h3>
+
+          <div class="field">
+            <label for="f-name">NOMBRE DEL CAZADOR</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" placeholder="Escribe tu nombre..." required>
+            <span class="field__err">▸ CAMPO REQUERIDO POR EL SISTEMA</span>
+          </div>
+          <div class="field">
+            <label for="f-mail">CANAL DE RESPUESTA (EMAIL)</label>
+            <input id="f-mail" name="email" type="email" autocomplete="email" placeholder="tu@correo.com" required>
+            <span class="field__err">▸ CANAL INVÁLIDO</span>
+          </div>
+          <div class="field">
+            <label for="f-msg">MENSAJE</label>
+            <textarea id="f-msg" name="message" rows="5" placeholder="Describe la misión..." required></textarea>
+            <span class="field__err">▸ EL MENSAJE NO PUEDE ESTAR VACÍO</span>
+          </div>
+
+          <!-- NOTA: formulario sin servicio de envío conectado (EmailJS/Formspree pendiente).
+               Ver js/main.js → initForm() para conectar el backend cuando lo configures. -->
+          <button class="btn btn--primary btn--wide" type="submit" data-sfx="click">
+            <span class="btn__glow"></span>
+            <span class="btn__txt">ENVIAR AL GREMIO</span>
+          </button>
+          <p class="form__note">▸ MODO SIMULACIÓN: EL ENVÍO REAL AÚN NO ESTÁ VINCULADO.</p>
+        </form>
+
+        <aside class="channels">
+          <div class="panel reveal">
+            <div class="panel__corner tl"></div><div class="panel__corner tr"></div>
+            <div class="panel__corner bl"></div><div class="panel__corner br"></div>
+            <h3 class="panel__title">▸ CANALES DE COMUNICACIÓN</h3>
+            <a class="chan" href="mailto:hsolorzano1407@gmail.com" data-sfx="click">
+              <span class="chan__ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+              </span>
+              <span class="chan__body"><b>CORREO</b><i>hsolorzano1407@gmail.com</i></span>
+              <span class="chan__go" aria-hidden="true">▸</span>
+            </a>
+            <a class="chan" href="https://github.com/AeronSmith1407" target="_blank" rel="noopener" data-sfx="click">
+              <span class="chan__ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+              </span>
+              <span class="chan__body"><b>GITHUB</b><i>@AeronSmith1407</i></span>
+              <span class="chan__go" aria-hidden="true">▸</span>
+            </a>
+            <a class="chan" href="assets/cv/CV-Henrry-Solorzano.pdf" download data-sfx="click">
+              <span class="chan__ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 12l5 5 5-5"/><path d="M4 20h16"/></svg>
+              </span>
+              <span class="chan__body"><b>PERGAMINO</b><i>Descargar CV (PDF)</i></span>
+              <span class="chan__go" aria-hidden="true">▸</span>
+            </a>
+          </div>
+
+          <div class="panel status reveal">
+            <div class="panel__corner tl"></div><div class="panel__corner tr"></div>
+            <div class="panel__corner bl"></div><div class="panel__corner br"></div>
+            <h3 class="panel__title">▸ ESTADO DEL CAZADOR</h3>
+            <p class="status__line"><span class="pulse"></span> ACEPTANDO NUEVAS MISIONES</p>
+            <p class="status__txt">Proyectos freelance, colaboraciones y desarrollo de sistemas a medida.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <p>© <span id="year"></span> HENRRY SOLORZANO — TODOS LOS DERECHOS DEL CAZADOR RESERVADOS</p>
+    <p class="foot__sys">SISTEMA v2.0 · SESIÓN ACTIVA</p>
+  </div>
+</footer>
+
+<!-- ============ NOTIFICACIONES DEL SISTEMA ============ -->
+<div class="notif-stack" id="notif-stack" aria-live="polite" aria-atomic="false"></div>
+
+<!-- ============ AUDIO: STREAM SOMAFM GROOVE SALAD ============ -->
+<!-- Radio lofi/chillout 24-7. Si el stream falla, se prueba el mirror automáticamente (js/audio.js). -->
+<audio id="bgm" preload="none" loop>
+  <source src="https://ice2.somafm.com/groovesalad-128-mp3" type="audio/mpeg">
+  <source src="https://ice1.somafm.com/groovesalad-256-mp3" type="audio/mpeg">
+</audio>
+
+<!-- ============ LIBS ============ -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js" defer></script>
+
+<!-- ============ APP ============ -->
+<script src="js/data.js" defer></script>
+<script src="js/audio.js" defer></script>
+<script src="js/particles.js" defer></script>
+<script src="js/cursor.js" defer></script>
+<script src="js/notifications.js" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>

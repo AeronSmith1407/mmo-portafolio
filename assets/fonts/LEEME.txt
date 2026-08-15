@@ -1,0 +1,2 @@
+Las fuentes se cargan desde Google Fonts (Cinzel, Rajdhani, Orbitron).
+Si quieres auto-hospedarlas, coloca los .woff2 aqui y declara @font-face en css/style.css.
